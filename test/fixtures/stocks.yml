@@ -1,0 +1,37 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  stock_id: MyString
+  store_date: 2018-01-16 23:09:09
+  ship_date: 2018-01-16 23:09:09
+  purchase_price: 1.5
+  purchase_shop: MyString
+  brand: MyString
+  product_id: MyString
+  box: MyString
+  manual: MyString
+  tag: MyString
+  other1: MyText
+  other2: MyText
+  paper_check: MyString
+  condition: MyString
+  note: MyText
+  image: MyText
+
+two:
+  stock_id: MyString
+  store_date: 2018-01-16 23:09:09
+  ship_date: 2018-01-16 23:09:09
+  purchase_price: 1.5
+  purchase_shop: MyString
+  brand: MyString
+  product_id: MyString
+  box: MyString
+  manual: MyString
+  tag: MyString
+  other1: MyText
+  other2: MyText
+  paper_check: MyString
+  condition: MyString
+  note: MyText
+  image: MyText

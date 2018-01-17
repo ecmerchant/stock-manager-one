@@ -1,0 +1,78 @@
+<div class="bg-success" style="align-items: center;">
+  <h1 style="padding: 10px;">在庫管理表&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>product by <a href="http://ec-merchant.com" target="_blank">ec-merchant.com</a></small></h1>
+</div>
+<h4>ログイン中：<%= @user %>&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to 'ログアウト', destroy_user_session_path, method: :get %>&nbsp;&nbsp;&nbsp;<%= link_to 'トップページ', apps_show_path, method: :get %>&nbsp;&nbsp;&nbsp;<%= link_to '管理者専用', rails_admin_path, method: :get %></h4>
+<br>
+
+<ul class="nav nav-tabs" role="tablist">
+  <li class="active" role="presentation">
+    <a aria-controls="tab_a" data-toggle="tab" href="#tab_a" role="tab">1.在庫管理表</a>
+  </li>
+  <li role="presentation">
+    <a aria-controls="tab_b" data-toggle="tab" href="#tab_b" role="tab">2.入出力管理</a>
+  </li>
+  <li role="presentation">
+    <a aria-controls="tab_c" data-toggle="tab" href="#tab_c" role="tab">3.設定一覧</a>
+  </li>
+</ul>
+<br>
+<div class="tab-content">
+  <div class="tab-pane active" id="tab_a" role="tabpanel">
+    <p>在庫管理データ</p>
+    <div id="stock_data"></div>
+  </div>
+
+  <div class="tab-pane" id="tab_b" role="tabpanel">
+    <%= form_tag({controller: "stocks", action: "import", method: "post"}, {multipart: true}) do %>
+      <div class="input-group">
+        <label class="input-group-btn">
+            <span class="btn btn-success">
+                CSVファイルの選択<%= file_field_tag :file, style: "display:none;" %>
+            </span>
+        </label>
+        <input type="text" class="form-control" readonly="" style="width:300px;" id="fname">
+      </div>
+      <br>
+      <%= submit_tag "ファイルのインポート", class: "btn btn-success" %>
+    <% end %>
+    <br>
+    <br>
+    <table class="table table-bordered" style="width: 340px;">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>受付時刻</th>
+          <th>終了時刻</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td id="sttime"><%= @sttime %></td>
+          <td id="fntime"><%= @fntime %></td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <%= link_to "CSV出力", stocks_export_path(format: :csv), class: "btn btn-primary" %>
+    <br>
+  </div>
+
+  <div class="tab-pane" id="tab_c" role="tabpanel">
+    <%= form_tag({controller: "stocks", action: "load", method: "post"}, {multipart: true}) do %>
+      <div class="input-group">
+        <label class="input-group-btn">
+            <span class="btn btn-success">
+                設定ファイルの選択<%= file_field_tag :set_file, style: "display:none;" %>
+            </span>
+        </label>
+        <input type="text" class="form-control" readonly="" style="width:300px;" id="set_fname">
+      </div>
+      <br>
+      <%= submit_tag "設定ファイルのインポート", class: "btn btn-success" %>
+    <% end %>
+    <br>
+    <div id="setting_data"></div>
+  </div>
+
+</div>

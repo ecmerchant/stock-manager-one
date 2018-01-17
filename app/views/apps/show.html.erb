@@ -1,0 +1,7 @@
+<div class="bg-success" style="align-items: center;">
+  <h1 style="padding: 10px;">アプリケーションの管理&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>product by <a href="http://ec-merchant.com" target="_blank">ec-merchant.com</a></small></h1>
+</div>
+<h4>ログイン中：<%= @user %>&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to 'ログアウト', destroy_user_session_path, method: :get %>&nbsp;&nbsp;&nbsp;<%= link_to '管理者専用', rails_admin_path, method: :get %></h4>
+<br>
+<br>
+<%= link_to '在庫管理表', stocks_show_path, method: :get %>
