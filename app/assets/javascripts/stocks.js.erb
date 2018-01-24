@@ -1,5 +1,14 @@
+
 //HTML読込後に実行
 window.addEventListener('DOMContentLoaded', function() {
+
+  $(document).ready(function() {
+  // #(ハッシュ)指定されたタブを表示する
+    var hashTabName = document.location.hash;
+    if (hashTabName) {
+      $('.nav-tabs a[href="' + hashTabName + '"]').tab('show');
+    }
+  });
 
   //インポートするファイル名の表示
   var targetfile = document.getElementById('file');
@@ -10,9 +19,7 @@ window.addEventListener('DOMContentLoaded', function() {
   }
 
   //在庫管理表のデーブル表示
-  var res = gon.res;
-  res = res.stock_id;
-  alert(res);
+  var dd = gon.stocklist;
   var maxRownum = 9600;
   var mydata = [];
   var colOption = [];
@@ -20,10 +27,31 @@ window.addEventListener('DOMContentLoaded', function() {
   var maxColnum = cheaders.length;
   var colWidth = [];
 
-  for(var i = 0; i < maxRownum; i++){
-    mydata[i] = [];
-    for(var j = 0; j < maxColnum; j++){
-      mydata[i][j] = "";
+  if(dd != null){
+    for(var i = 0; i < dd.length; i++){
+      mydata[i] = [];
+      mydata[i][0] = dd[i].stock_id;
+      mydata[i][1] = dd[i].store_date;
+      mydata[i][2] = dd[i].purchase_price;
+      mydata[i][3] = dd[i].purchase_shop;
+      mydata[i][4] = dd[i].brand;
+      mydata[i][5] = dd[i].product_id;
+      mydata[i][6] = dd[i].box;
+      mydata[i][7] = dd[i].manual;
+      mydata[i][8] = dd[i].tag;
+      mydata[i][9] = dd[i].other1;
+      mydata[i][10] = dd[i].other2;
+      mydata[i][11] = dd[i].paper_check;
+      mydata[i][12] = dd[i].condition;
+      mydata[i][13] = dd[i].note;
+      mydata[i][14] = dd[i].image;
+    }
+  }else{
+    for(var i = 0; i < maxRownum; i++){
+      mydata[i] = [];
+      for(var j = 0; j < maxColnum; j++){
+        mydata[i][j] = "";
+      }
     }
   }
 
@@ -35,7 +63,7 @@ window.addEventListener('DOMContentLoaded', function() {
   var stock_container = document.getElementById('stock_data');
   var stock_handsontable = new Handsontable(stock_container, {
     /* オプション */
-    width: 1160,
+    width: 1140,
     height: 320,
     contextMenu: true,
     data: mydata,
@@ -57,7 +85,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
   ////////
   //設定ファイルの表示
-  var res = gon.res;
+  var res = gon.codelist;
   var maxRownum2 = 100;
   var mydata2 = [];
   var colOption2 = [];
@@ -65,10 +93,19 @@ window.addEventListener('DOMContentLoaded', function() {
   var maxColnum2 = cheaders2.length;
   var colWidth2 = [];
 
-  for(var i = 0; i < maxRownum2; i++){
-    mydata2[i] = [];
-    for(var j = 0; j < maxColnum2; j++){
-      mydata2[i][j] = "";
+  if(res != null){
+    for(var i = 0; i < res.length; i++){
+      mydata2[i] = [];
+      mydata2[i][0] = res[i].category;
+      mydata2[i][1] = res[i].number;
+      mydata2[i][2] = res[i].value;
+    }
+  }else{
+    for(var i = 0; i < maxRownum2; i++){
+      mydata2[i] = [];
+      for(var j = 0; j < maxColnum2; j++){
+        mydata2[i][j] = "";
+      }
     }
   }
 
@@ -83,7 +120,7 @@ window.addEventListener('DOMContentLoaded', function() {
     width: 400,
     height: 280,
     contextMenu: true,
-    data: mydata,
+    data: mydata2,
     wordWrap: false,
     rowHeaders: true,
     colHeaders: cheaders2,
@@ -104,16 +141,16 @@ window.addEventListener('DOMContentLoaded', function() {
   $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
     var activated_tab = e.target // activated tab
     var previous_tab = e.relatedTarget // previous tab
-    //stock_handsontable.render();
+    stock_handsontable.render();
     setting_handsontable.render();
   })
 
   //インポートするファイル名の表示
-  var targetfile = document.getElementById('set_file');
-  targetfile.onchange = function(){
-    var flabel = document.getElementById('set_fname');
-    var fname = targetfile.value.replace(/\\/g, '/').replace(/.*\//, '');
-    flabel.value = fname;
+  var targetfile2 = document.getElementById('set_file');
+  targetfile2.onchange = function(){
+    var flabel2 = document.getElementById('set_fname');
+    var fname2 = targetfile2.value.replace(/\\/g, '/').replace(/.*\//, '');
+    flabel2.value = fname2;
   }
 
 })

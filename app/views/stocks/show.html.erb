@@ -14,6 +14,9 @@
   <li role="presentation">
     <a aria-controls="tab_c" data-toggle="tab" href="#tab_c" role="tab">3.設定一覧</a>
   </li>
+  <li role="presentation">
+    <a aria-controls="tab_d" data-toggle="tab" href="#tab_d" role="tab">4.パスワード設定</a>
+  </li>
 </ul>
 <br>
 <div class="tab-content">
@@ -53,9 +56,37 @@
         </tr>
       </tbody>
     </table>
+    <p>CSV出力設定</p>
+
+    <%= search_form_for(@q, url: stocks_show_path, html: { method: :post, class: 'form-horizontal', role: 'form' }) do |f| %>
+      <%= render 'search_form', f: f %>
+    <% end %>
+
     <br>
-    <%= link_to "CSV出力", stocks_export_path(format: :csv), class: "btn btn-primary" %>
-    <br>
+
+    <h4>検索結果</h4>
+    <table class="table table-list ">
+      <thead>
+        <tr>
+          <th>在庫管理番号</th>
+          <th>仕入価格</th>
+          <th>ブランド</th>
+          <th>製品番号</th>
+          <th>仕入先</th>
+        </tr>
+      </thead>
+      <% @products.each do |product| %>
+      <tbody>
+      <tr>
+        <td><%= product.stock_id %> </td>
+        <td><%= product.purchase_price %></td>
+        <td><%= product.brand %></td>
+        <td><%= product.product_id %></td>
+        <td><%= product.purchase_shop %></td>
+      </tr>
+      </tbody>
+      <% end %>
+    </table>
   </div>
 
   <div class="tab-pane" id="tab_c" role="tabpanel">
@@ -73,6 +104,36 @@
     <% end %>
     <br>
     <div id="setting_data"></div>
+  </div>
+
+  <div class="tab-pane" id="tab_d" role="tabpanel">
+    <div class="row">
+      <div class="col-md-3">
+        <p>管理パスワードの設定</p>
+        <%= form_tag('/stocks/setpw', method:'post') do %>
+          <div class="form-group">
+            <%= label_tag :password, "現在のパスワード" %>
+            <%= password_field_tag 'password', nil, class:"form-control" %>
+          </div>
+          <div class="form-group">
+            <%= label_tag :new_password, "変更後のパスワード" %>
+            <%= password_field_tag 'new_password', nil, class:"form-control" %>
+          </div>
+          <%= submit_tag "設定", class: "btn btn-success" %>
+        <% end %>
+      </div>
+    </div>
+    <br>
+    <% if flash[:notice] %>
+      <div class="alert alert-success">
+        <%= flash[:notice] %>
+      </div>
+    <% end %>
+    <% if flash[:alert] %>
+      <div class="alert alert-danger">
+        <%= flash[:alert] %>
+      </div>
+    <% end %>
   </div>
 
 </div>

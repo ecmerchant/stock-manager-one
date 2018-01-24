@@ -6,10 +6,16 @@ Rails.application.routes.draw do
   get 'apps/show'
 
   get 'stocks/show'
+  post 'stocks/show'
+
+  get 'stocks/search'
+  post 'stocks/search'
   post 'stocks/import'
+  get 'stocks/export'
   post 'stocks/export'
   post 'stocks/load'
-
+  post 'stocks/setpw'
+  get 'stocks/export.csv'  => 'stocks#show'
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   mount Resque::Server.new, at: "/resque"

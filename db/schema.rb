@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180116141619) do
+ActiveRecord::Schema.define(version: 20180121064056) do
+
+  create_table "accounts", force: :cascade do |t|
+    t.string   "password_digest"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.string   "new_password"
+    t.string   "new_password_confirmation"
+  end
 
   create_table "codes", force: :cascade do |t|
-    t.string   "type"
+    t.string   "category"
     t.string   "number"
     t.text     "value"
     t.datetime "created_at", null: false
@@ -54,6 +62,7 @@ ActiveRecord::Schema.define(version: 20180116141619) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.boolean  "admin_flg"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
