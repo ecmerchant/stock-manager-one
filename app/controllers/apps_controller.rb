@@ -7,7 +7,7 @@ class AppsController < ApplicationController
   end
 
   def show
-
+    @user = current_user.email
   end
 
 end

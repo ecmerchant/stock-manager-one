@@ -65,7 +65,7 @@ class StocksController < ApplicationController
       "新古","画像","入庫日","仕入値","型番","その他１","その他２","備考"]
 
     if csvfile != nil then
-      csv = CSV.read(csvfile.path)
+      csv = CSV.read(csvfile.path,encoding: "Shift_JIS:UTF-8")
       if csv[0] == header_check then
         logger.debug("header ok")
         ps = Code.where(category: csv[0][1])
@@ -113,7 +113,7 @@ class StocksController < ApplicationController
     logger.debug(account)
     if account.authenticate(pass_check)
       if csvfile != nil then
-        csv = CSV.table(csvfile.path)
+        csv = CSV.table(csvfile.path,encoding: "Shift_JIS:UTF-8")
 
         csv.each do |row|
           logger.debug(row[0])
@@ -142,7 +142,7 @@ class StocksController < ApplicationController
     csvfile = params[:set_file]
     header_check = [:type,:code,:value]
     if csvfile != nil then
-      csv = CSV.table(csvfile.path)
+      csv = CSV.table(csvfile.path,encoding: "Shift_JIS:UTF-8")
       logger.debug(csv.headers)
       logger.debug(header_check)
       if csv.headers == header_check then

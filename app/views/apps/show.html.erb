@@ -4,4 +4,4 @@
 <h4>ログイン中：<%= @user %>&nbsp;&nbsp;&nbsp;&nbsp;<%= link_to 'ログアウト', destroy_user_session_path, method: :get %>&nbsp;&nbsp;&nbsp;<%= link_to '管理者専用', rails_admin_path, method: :get %></h4>
 <br>
 <br>
-<%= link_to '在庫管理表', stocks_show_path, method: :get %>
+<h2><%= link_to '在庫管理表はこちら', stocks_show_path, method: :get %></h2>
