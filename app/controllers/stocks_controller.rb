@@ -65,7 +65,7 @@ class StocksController < ApplicationController
       "新古","画像","入庫日","仕入値","型番","その他１","その他２","備考"]
 
     if csvfile != nil then
-      csv = CSV.read(csvfile.path,encoding: "Shift_JIS:UTF-8")
+      csv = CSV.read(csvfile.path,encoding: "BOM|UTF-8")
       if csv[0] == header_check then
         logger.debug("header ok")
         ps = Code.where(category: csv[0][1])
