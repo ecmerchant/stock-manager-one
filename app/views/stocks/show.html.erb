@@ -142,7 +142,14 @@
     <% end %>
     <br>
     <br>
-
+    <%= form_tag({controller: "stocks", action: "delete", method: "post"}, {multipart: true}) do %>
+      <div class="form-group" style="width:250px;">
+        <%= label_tag :password_del, "パスワードの入力" %>
+        <%= password_field_tag 'password_del', nil, class:"form-control" %>
+      </div>
+      <%= submit_tag "在庫データの全削除", class: "btn btn-alert" %>
+    <% end %>
+    <br>
     <% if flash[:alarm] %>
       <div class="alert alert-danger">
         <%= flash[:alarm] %>
@@ -152,6 +159,18 @@
     <% if flash[:success] %>
       <div class="alert alert-success">
         <%= flash[:success] %>
+      </div>
+    <% end %>
+
+    <% if flash[:alarm1] %>
+      <div class="alert alert-danger">
+        <%= flash[:alarm1] %>
+      </div>
+    <% end %>
+
+    <% if flash[:success1] %>
+      <div class="alert alert-success">
+        <%= flash[:success1] %>
       </div>
     <% end %>
 

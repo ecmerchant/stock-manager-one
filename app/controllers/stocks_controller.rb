@@ -133,6 +133,22 @@ class StocksController < ApplicationController
     redirect_to "/stocks/show#tab_e"
   end
 
+  def delete
+    pass_check = params[:password_del]
+    logger.debug(pass_check)
+    account = Account.all.first
+    logger.debug(account)
+    if account.authenticate(pass_check)
+      logger.debug("complete")
+      Stock.all.delete_all
+      flash[:success1] = "全削除成功"
+    else
+      logger.debug ("error")
+      flash[:alarm1] = "パスワードが違います"
+    end
+    redirect_to "/stocks/show#tab_e"
+  end
+
   def export
     fname = "在庫結果_" + (DateTime.now.strftime("%Y%m%d%H%M")) + ".csv"
     send_data render_to_string, filename: fname, type: :csv

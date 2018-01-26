@@ -4,10 +4,10 @@ Rails.application.routes.draw do
 
   root to: 'apps#show'
   get 'apps/show'
-
+  post 'stocks/delete'
   get 'stocks/show'
   post 'stocks/show'
-  post 'stocks/update' 
+  post 'stocks/update'
   get 'stocks/search'
   post 'stocks/search'
   post 'stocks/import'
