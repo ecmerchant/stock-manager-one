@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   get 'stocks/show'
   post 'stocks/show'
-
+  post 'stocks/update' 
   get 'stocks/search'
   post 'stocks/search'
   post 'stocks/import'

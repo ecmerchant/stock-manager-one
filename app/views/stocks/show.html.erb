@@ -15,7 +15,10 @@
     <a aria-controls="tab_c" data-toggle="tab" href="#tab_c" role="tab">3.設定一覧</a>
   </li>
   <li role="presentation">
-    <a aria-controls="tab_d" data-toggle="tab" href="#tab_d" role="tab">4.パスワード設定</a>
+    <a aria-controls="tab_d" data-toggle="tab" href="#tab_e" role="tab">4.出庫データ</a>
+  </li>
+  <li role="presentation">
+    <a aria-controls="tab_d" data-toggle="tab" href="#tab_d" role="tab">5.パスワード設定</a>
   </li>
 </ul>
 <br>
@@ -30,13 +33,13 @@
       <div class="input-group">
         <label class="input-group-btn">
             <span class="btn btn-success">
-                CSVファイルの選択<%= file_field_tag :file, style: "display:none;" %>
+                在庫ファイルの選択<%= file_field_tag :file, style: "display:none;" %>
             </span>
         </label>
         <input type="text" class="form-control" readonly="" style="width:300px;" id="fname">
       </div>
       <br>
-      <%= submit_tag "ファイルのインポート", class: "btn btn-success" %>
+      <%= submit_tag "在庫ファイルのインポート", class: "btn btn-success" %>
     <% end %>
     <br>
     <br>
@@ -58,7 +61,7 @@
     </table>
     <p>CSV出力設定</p>
 
-    <%= search_form_for(@q, url: stocks_show_path, html: { method: :post, class: 'form-horizontal', role: 'form' }) do |f| %>
+    <%= search_form_for(@q, url: '/stocks/show#tab_b', html: { method: :post, class: 'form-horizontal', role: 'form' }) do |f| %>
       <%= render 'search_form', f: f %>
     <% end %>
 
@@ -75,16 +78,28 @@
           <th>仕入先</th>
         </tr>
       </thead>
-      <% @products.each do |product| %>
-      <tbody>
-      <tr>
-        <td><%= product.stock_id %> </td>
-        <td><%= product.purchase_price %></td>
-        <td><%= product.brand %></td>
-        <td><%= product.product_id %></td>
-        <td><%= product.purchase_shop %></td>
-      </tr>
-      </tbody>
+      <% if @products != nil %>
+        <% @products.each do |product| %>
+        <tbody>
+          <tr>
+            <td><%= product.stock_id %> </td>
+            <td><%= product.purchase_price %></td>
+            <td><%= product.brand %></td>
+            <td><%= product.product_id %></td>
+            <td><%= product.purchase_shop %></td>
+          </tr>
+        </tbody>
+        <% end %>
+      <% else %>
+        <tbody>
+          <tr>
+            <td> - </td>
+            <td> - </td>
+            <td> - </td>
+            <td> - </td>
+            <td> - </td>
+          </tr>
+        </tbody>
       <% end %>
     </table>
   </div>
@@ -104,6 +119,41 @@
     <% end %>
     <br>
     <div id="setting_data"></div>
+  </div>
+
+  <div class="tab-pane" id="tab_e" role="tabpanel">
+    <%= form_tag({controller: "stocks", action: "update", method: "post"}, {multipart: true}) do %>
+      <div class="input-group">
+        <label class="input-group-btn">
+            <span class="btn btn-success">
+                出庫ファイルの選択<%= file_field_tag :file_e, style: "display:none;" %>
+            </span>
+        </label>
+        <input type="text" class="form-control" readonly="" style="width:300px;" id="fname_e">
+      </div>
+      <br>
+      <div class="form-group" style="width:250px;">
+        <%= label_tag :password_in, "パスワードの入力" %>
+        <%= password_field_tag 'password_in', nil, class:"form-control" %>
+      </div>
+      <%= submit_tag "出庫ファイルのインポート", class: "btn btn-success" %>
+    <% end %>
+    <br>
+    <br>
+
+    <% if flash[:alarm] %>
+      <div class="alert alert-danger">
+        <%= flash[:alarm] %>
+      </div>
+    <% end %>
+
+    <% if flash[:success] %>
+      <div class="alert alert-success">
+        <%= flash[:success] %>
+      </div>
+    <% end %>
+
+
   </div>
 
   <div class="tab-pane" id="tab_d" role="tabpanel">

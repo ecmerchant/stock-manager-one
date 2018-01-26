@@ -24,6 +24,7 @@ class StocksController < ApplicationController
   end
 
   def show
+    @exdata = nil
     @account = Account.new
     @user = current_user.email
     @header_hash = Stock_fields
@@ -52,10 +53,9 @@ class StocksController < ApplicationController
         end
         send_data td, filename: fname, type: :csv
       end
-
     else
-      @q = Stock.search(brand: "99999")
-      @products = @q.result(distinct: true)
+      @q = Stock.search
+      @products = nil
     end
   end
 
@@ -105,6 +105,34 @@ class StocksController < ApplicationController
     redirect_to stocks_show_path
   end
 
+  def update
+    csvfile = params[:file_e]
+    pass_check = params[:password_in]
+    logger.debug(pass_check)
+    account = Account.all.first
+    logger.debug(account)
+    if account.authenticate(pass_check)
+      if csvfile != nil then
+        csv = CSV.table(csvfile.path)
+
+        csv.each do |row|
+          logger.debug(row[0])
+          target = Stock.find_by(stock_id:row[0])
+          if target != nil then
+            target.delete
+          end
+        end
+
+        logger.debug("complete")
+        flash[:success] = "削除成功"
+      end
+    else
+      logger.debug ("error")
+      flash[:alarm] = "パスワードが違います"
+    end
+    redirect_to "/stocks/show#tab_e"
+  end
+
   def export
     fname = "在庫結果_" + (DateTime.now.strftime("%Y%m%d%H%M")) + ".csv"
     send_data render_to_string, filename: fname, type: :csv
@@ -138,7 +166,7 @@ class StocksController < ApplicationController
     logger.debug("recieved")
     logger.debug(params[:password])
 
-    account = Account.find(2)
+    account = Account.all.first
     if account.authenticate(params[:password])
       logger.debug("Success!!!!!")
       logger.debug(params[:new_password])

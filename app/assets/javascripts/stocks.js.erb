@@ -18,6 +18,14 @@ window.addEventListener('DOMContentLoaded', function() {
     flabel.value = fname;
   }
 
+  //インポートするファイル名の表示
+  var targetfile3 = document.getElementById('file_e');
+  targetfile3.onchange = function(){
+    var flabel3 = document.getElementById('fname_e');
+    var fname3 = targetfile3.value.replace(/\\/g, '/').replace(/.*\//, '');
+    flabel3.value = fname3;
+  }
+
   //在庫管理表のデーブル表示
   var dd = gon.stocklist;
   var maxRownum = 9600;
