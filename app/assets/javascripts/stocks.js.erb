@@ -31,7 +31,7 @@ window.addEventListener('DOMContentLoaded', function() {
   var maxRownum = 9600;
   var mydata = [];
   var colOption = [];
-  var cheaders = ["在庫管理番号","入庫日","仕入値","仕入先","ブランド","型番","箱","取説","タグ","その他1","その他2","紙確認","新古","備考","画像"];
+  var cheaders = ["在庫管理番号","入庫日","仕入値","仕入先","種別","棚情報","ブランド","型番","箱","取説","タグ","その他1","その他2","紙確認","新古","備考","画像"];
   var maxColnum = cheaders.length;
   var colWidth = [];
 
@@ -42,17 +42,19 @@ window.addEventListener('DOMContentLoaded', function() {
       mydata[i][1] = dd[i].store_date;
       mydata[i][2] = dd[i].purchase_price;
       mydata[i][3] = dd[i].purchase_shop;
-      mydata[i][4] = dd[i].brand;
-      mydata[i][5] = dd[i].product_id;
-      mydata[i][6] = dd[i].box;
-      mydata[i][7] = dd[i].manual;
-      mydata[i][8] = dd[i].tag;
-      mydata[i][9] = dd[i].other1;
-      mydata[i][10] = dd[i].other2;
-      mydata[i][11] = dd[i].paper_check;
-      mydata[i][12] = dd[i].condition;
-      mydata[i][13] = dd[i].note;
-      mydata[i][14] = dd[i].image;
+      mydata[i][4] = dd[i].category;
+      mydata[i][5] = dd[i].place;
+      mydata[i][6] = dd[i].brand;
+      mydata[i][7] = dd[i].product_id;
+      mydata[i][8] = dd[i].box;
+      mydata[i][9] = dd[i].manual;
+      mydata[i][10] = dd[i].tag;
+      mydata[i][11] = dd[i].other1;
+      mydata[i][12] = dd[i].other2;
+      mydata[i][13] = dd[i].paper_check;
+      mydata[i][14] = dd[i].condition;
+      mydata[i][15] = dd[i].note;
+      mydata[i][16] = dd[i].image;
     }
   }else{
     for(var i = 0; i < maxRownum; i++){

@@ -38,7 +38,7 @@ class StocksController < ApplicationController
       if params[:export_button]
         fname = "在庫結果_" + (DateTime.now.strftime("%Y%m%d%H%M")) + ".csv"
 
-        td = CSV.generate do |csv|
+        td = CSV.generate(encoding: Encoding::SJIS) do |csv|
 
           csv_column_names = Stock_fields.values
 
@@ -61,40 +61,43 @@ class StocksController < ApplicationController
 
   def import
     csvfile = params[:file]
-    header_check = ["在庫管理番号","仕入先","ブランド","箱","取説","タグ","紙確認",
+    header_check = ["在庫管理番号","仕入先","種別","棚情報","ブランド","箱","取説","タグ","紙確認",
       "新古","画像","入庫日","仕入値","型番","その他１","その他２","備考"]
 
     if csvfile != nil then
-      csv = CSV.read(csvfile.path, encoding: "BOM|UTF-8")
+      csv = CSV.read(csvfile.path, encoding: "Shift_JIS:UTF-8")
       if csv[0] == header_check then
         logger.debug("header ok")
         ps = Code.where(category: csv[0][1])
-        br = Code.where(category: csv[0][2])
+        ct = Code.where(category: csv[0][2])
+        pl = Code.where(category: csv[0][3])
+        br = Code.where(category: csv[0][4])
         bx = Code.where(category: "有無")
         mn = Code.where(category: "有無")
         tg = Code.where(category: "有無")
         pc = Code.where(category: "指示")
         cd = Code.where(category: "状態")
-
         for row in csv do
           if row[0] != "在庫管理番号" then
             target = Stock.find_or_create_by(stock_id:row[0])
             target.update(
               stock_id: row[0],
               purchase_shop: ps.find_by(number: row[1]).value,
-              brand: br.find_by(number: row[2]).value,
-              box: bx.find_by(number: row[3]).value,
-              manual: mn.find_by(number: row[4]).value,
-              tag: tg.find_by(number: row[5]).value,
-              paper_check: pc.find_by(number: row[6]).value,
-              condition: cd.find_by(number: row[7]).value,
-              store_date: custom_parse(row[9]),
-              image: row[8],
-              purchase_price: row[10],
-              product_id: row[11],
-              other1: row[12],
-              other2: row[13],
-              note: row[15]
+              category: ct.find_by(number: row[2]).value,
+              place: pl.find_by(number: row[3]).value,
+              brand: br.find_by(number: row[4]).value,
+              box: bx.find_by(number: row[5]).value,
+              manual: mn.find_by(number: row[6]).value,
+              tag: tg.find_by(number: row[7]).value,
+              paper_check: pc.find_by(number: row[8]).value,
+              condition: cd.find_by(number: row[9]).value,
+              store_date: custom_parse(row[11]),
+              image: row[10],
+              purchase_price: row[12],
+              product_id: row[13],
+              other1: row[14],
+              other2: row[15],
+              note: row[17]
             )
           end
         end
@@ -113,7 +116,7 @@ class StocksController < ApplicationController
     logger.debug(account)
     if account.authenticate(pass_check)
       if csvfile != nil then
-        csv = CSV.table(csvfile.path, encoding: "BOM|UTF-8")
+        csv = CSV.table(csvfile.path, encoding: "Shift_JIS:UTF-8")
 
         csv.each do |row|
           logger.debug(row[0])
@@ -149,30 +152,30 @@ class StocksController < ApplicationController
     redirect_to "/stocks/show#tab_e"
   end
 
-  def export
-    fname = "在庫結果_" + (DateTime.now.strftime("%Y%m%d%H%M")) + ".csv"
-    send_data render_to_string, filename: fname, type: :csv
-  end
-
   def load
-    csvfile = params[:set_file]
-    header_check = [:type,:code,:value]
-    if csvfile != nil then
-      csv = CSV.table(csvfile.path, encoding: "BOM|UTF-8")
-      logger.debug(csv.headers)
-      logger.debug(header_check)
-      if csv.headers == header_check then
-        logger.debug("header is ok")
-        csv.each do |row|
-          logger.debug(row[:type].to_s + " " + row[:code].to_s + " " + row[:value].to_s)
-          target = Code.find_or_create_by(value:row[:value])
-          target.update(
-            number: row[:code],
-            category: row[:type],
-            value: row[:value]
-          )
+    logger.debug(params[:commit])
+    if params[:commit] == "設定ファイルのインポート" then
+      csvfile = params[:set_file]
+      header_check = [:type,:code,:value]
+      if csvfile != nil then
+        csv = CSV.table(csvfile.path, encoding: "Shift_JIS:UTF-8")
+        logger.debug(csv.headers)
+        logger.debug(header_check)
+        if csv.headers == header_check then
+          logger.debug("header is ok")
+          csv.each do |row|
+            logger.debug(row[:type].to_s + " " + row[:code].to_s + " " + row[:value].to_s)
+            target = Code.find_or_create_by(value:row[:value])
+            target.update(
+              number: row[:code],
+              category: row[:type],
+              value: row[:value]
+            )
+          end
         end
       end
+    else
+      target = Code.all.delete_all
     end
     gon.codelist = Code.all
     redirect_to stocks_show_path

@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
     store_date: "入庫日",
     purchase_price: "仕入値",
     purchase_shop: "仕入先",
+    category: "種別",
+    place: "棚情報",
     brand: "ブランド",
     product_id: "型番",
     box: "箱",

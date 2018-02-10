@@ -1,9 +1,7 @@
 require 'csv'
 
-CSV.generate do |csv|
-  csv_column_names = %w(氏名 アドレス 番号 ステータス)
-     #%w(氏名 アドレス)はrubyのリテラルの一つで、["氏名","アドレス"]と同値になります。
-  csv << csv_column_names
+CSV.generate(encoding: Encoding::SJIS) do |csv|
+
   @products.each do |mic|
     csv_column_values = []
     for f in tary
