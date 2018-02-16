@@ -2,6 +2,11 @@ require 'resque/server'
 
 Rails.application.routes.draw do
 
+  get 'items' => 'items#show'
+  get 'items/show'
+
+  get 'items/search'
+
   root to: 'apps#show'
   get 'apps/show'
   post 'stocks/delete'

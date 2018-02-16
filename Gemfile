@@ -74,3 +74,7 @@ gem 'daemons'
 
 # gem for search form
 gem 'ransack'
+
+# gem for ebay
+gem 'ebay-ruby'
+

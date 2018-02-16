@@ -1,0 +1,2 @@
+class SearchCondition < ApplicationRecord
+end

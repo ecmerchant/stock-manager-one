@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180210033011) do
+ActiveRecord::Schema.define(version: 20180211171647) do
 
   create_table "accounts", force: :cascade do |t|
     t.string   "password_digest"
@@ -24,6 +24,43 @@ ActiveRecord::Schema.define(version: 20180210033011) do
     t.string   "category"
     t.string   "number"
     t.text     "value"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string   "user"
+    t.string   "asin"
+    t.string   "key"
+    t.integer  "input_price"
+    t.float    "sell_price"
+    t.string   "title"
+    t.string   "url"
+    t.string   "condition"
+    t.string   "ebay_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "search_conditions", force: :cascade do |t|
+    t.string   "user"
+    t.string   "app_id"
+    t.integer  "low_price"
+    t.integer  "high_price"
+    t.string   "category_id"
+    t.string   "item_condition"
+    t.string   "sales_type"
+    t.string   "rank"
+    t.string   "score"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  create_table "search_keys", force: :cascade do |t|
+    t.string   "user"
+    t.string   "asin"
+    t.string   "key"
+    t.integer  "price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

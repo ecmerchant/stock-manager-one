@@ -65,7 +65,11 @@ GEM
       railties (>= 4.1.0, < 5.2)
       responders
       warden (~> 1.2.3)
+    ebay-ruby (0.0.1)
+      excon (~> 0.33)
+      multi_xml (~> 0.5.5)
     erubis (2.7.0)
+    excon (0.60.0)
     execjs (2.7.0)
     ffi (1.9.18)
     font-awesome-rails (4.7.0.3)
@@ -119,6 +123,7 @@ GEM
     minitest (5.11.1)
     mono_logger (1.1.0)
     multi_json (1.13.1)
+    multi_xml (0.5.5)
     mustermann (1.0.1)
     nested_form (0.3.2)
     nio4r (2.2.0)
@@ -267,6 +272,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   daemons
   devise
+  ebay-ruby
   gon
   jbuilder (~> 2.5)
   jquery-rails

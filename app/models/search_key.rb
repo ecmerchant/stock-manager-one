@@ -1,0 +1,2 @@
+class SearchKey < ApplicationRecord
+end

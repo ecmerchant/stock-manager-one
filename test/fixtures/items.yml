@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: MyString
+  asin: MyString
+  key: MyString
+  input_price: 1
+  sell_price: 1.5
+  title: MyString
+  url: MyString
+  condition: MyString
+  ebay_id: MyString
+
+two:
+  user: MyString
+  asin: MyString
+  key: MyString
+  input_price: 1
+  sell_price: 1.5
+  title: MyString
+  url: MyString
+  condition: MyString
+  ebay_id: MyString
