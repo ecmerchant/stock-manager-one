@@ -80,17 +80,81 @@ class StocksController < ApplicationController
         for row in csv do
           if row[0] != "在庫管理番号" then
             target = Stock.find_or_create_by(stock_id:row[0])
+
+            tps = ps.find_by(number: row[1])
+            if tps != nil then
+              tps = tps.value
+            else
+              tps = ""
+            end
+
+            tct = ct.find_by(number: row[2])
+            if tct != nil then
+              tct = tct.value
+            else
+              tct = ""
+            end
+
+            tpl = pl.find_by(number: row[3])
+            if tpl != nil then
+              tpl = tpl.value
+            else
+              tpl = ""
+            end
+
+            tbr = br.find_by(number: row[4])
+            if tbr != nil then
+              tbr = tbr.value
+            else
+              tbr = ""
+            end
+
+            tbx = bx.find_by(number: row[5])
+            if tbx != nil then
+              tbx = tbx.value
+            else
+              tbx = ""
+            end
+
+            tmn = mn.find_by(number: row[6])
+            if tmn != nil then
+              tmn = tmn.value
+            else
+              tmn = ""
+            end
+
+            ttg = tg.find_by(number: row[7])
+            if ttg != nil then
+              ttg = ttg.value
+            else
+              ttg = ""
+            end
+
+            tpc = pc.find_by(number: row[8])
+            if tpc != nil then
+              tpc = tpc.value
+            else
+              tpc = ""
+            end
+
+            tcd = cd.find_by(number: row[9])
+            if tcd != nil then
+              tcd = tpc.value
+            else
+              tcd = ""
+            end
+
             target.update(
               stock_id: row[0],
-              purchase_shop: ps.find_by(number: row[1]).value,
-              category: ct.find_by(number: row[2]).value,
-              place: pl.find_by(number: row[3]).value,
-              brand: br.find_by(number: row[4]).value,
-              box: bx.find_by(number: row[5]).value,
-              manual: mn.find_by(number: row[6]).value,
-              tag: tg.find_by(number: row[7]).value,
-              paper_check: pc.find_by(number: row[8]).value,
-              condition: cd.find_by(number: row[9]).value,
+              purchase_shop: tps,
+              category: tct,
+              place: tpl,
+              brand: tbr,
+              box: tbx,
+              manual: tmn,
+              tag: ttg,
+              paper_check: tpc,
+              condition: tcd,
               store_date: custom_parse(row[11]),
               image: row[10],
               purchase_price: row[12],

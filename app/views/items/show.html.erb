@@ -1,3 +1,4 @@
+
 <div class="bg-success" style="align-items: center;">
   <h1 style="padding: 10px;">eBayリサーチツール&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>product by <a href="http://ec-merchant.com" target="_blank">ec-merchant.com</a></small></h1>
 </div>
@@ -9,9 +10,13 @@
     <a aria-controls="tab_a" data-toggle="tab" href="#tab_a" role="tab">1.検索条件の設定</a>
   </li>
   <li role="presentation">
-    <a aria-controls="tab_b" data-toggle="tab" href="#tab_b" role="tab">2.検索結果の確認</a>
+    <a aria-controls="tab_b" data-toggle="tab" href="#tab_b" role="tab">2.キーワードの入力</a>
+  </li>
+  <li role="presentation">
+    <a aria-controls="tab_c" data-toggle="tab" href="#tab_c" role="tab">3.検索結果の確認</a>
   </li>
 </ul>
+
 <br>
 <div class="tab-content">
   <div class="tab-pane active" id="tab_a" role="tabpanel">
@@ -20,7 +25,7 @@
         <p>検索条件の基本設定</p>
       </div>
     </div>
-    <%= form_for(@search, url: {action:'show'}, html:{class:'form-horizontal'} ) do |f| %>
+    <%= form_for(@condition, url: '/items/save', html:{class:'form-horizontal'} ) do |f| %>
       <div class="form-group col-md-4">
         <label class="col-md-4 control-label" for="search_condition_app_id">eBayAppID</label>
         <div class="col-md-8">
@@ -28,48 +33,112 @@
         </div>
       </div>
       <div class="form-group col-md-4">
-        <label class="col-md-4 control-label" for="search_condition_app_id">最低価格($)</label>
+        <label class="col-md-4 control-label" for="search_condition_low_price">最低価格($)</label>
         <div class="col-md-8">
           <%= f.text_field(:low_price, class:'form-control') %>
         </div>
       </div>
       <div class="form-group col-md-4">
-        <label class="col-md-4 control-label" for="search_condition_app_id">最高価格($)</label>
+        <label class="col-md-4 control-label" for="search_condition_high_price">最高価格($)</label>
         <div class="col-md-8">
           <%= f.text_field(:high_price, class:'form-control') %>
         </div>
       </div>
       <div class="form-group col-md-4">
-        <label class="col-md-4 control-label" for="search_condition_app_id">カテゴリーID</label>
+        <label class="col-md-4 control-label" for="search_condition_category_id">カテゴリーID</label>
         <div class="col-md-8">
-          <%= f.text_field(:category_id, class:'form-control') %>
+          <%= f.select :category_id, @category_group, {}, {class:'form-control'} %>
         </div>
       </div>
       <div class="form-group col-md-4">
-        <label class="col-md-4 control-label" for="search_condition_app_id">商品状態</label>
+        <label class="col-md-4 control-label" for="search_condition_item_condition">商品状態</label>
         <div class="col-md-8">
-          <%= f.text_field(:item_condition, class:'form-control') %>
+          <%= f.select :item_condition, @condition_group, {}, {class:'form-control'} %>
         </div>
       </div>
       <div class="form-group col-md-4">
-        <label class="col-md-4 control-label" for="search_condition_app_id">販売形式</label>
+        <label class="col-md-4 control-label" for="search_condition_sales_type">販売形式</label>
         <div class="col-md-8">
-          <%= f.text_field(:sales_type, class:'form-control') %>
+          <%= f.select :sales_type, @sales_group, {}, {class:'form-control'} %>
         </div>
       </div>
       <div class="form-group col-md-4">
-        <label class="col-md-4 control-label" for="search_condition_app_id">セラーの評価</label>
+        <label class="col-md-4 control-label" for="search_condition_rank">価格の順位</label>
+        <div class="col-md-8">
+          <%= f.text_field(:rank, class:'form-control') %>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label class="col-md-4 control-label" for="search_condition_score">セラーの評価</label>
         <div class="col-md-8">
           <%= f.text_field(:score, class:'form-control') %>
         </div>
       </div>
+      <div class="form-group col-md-5">
+        <div class="col-md-1">
+          <% @condition.user = @user %>
+          <%= f.hidden_field :user %>
+        </div>
+        <div class="col-md-11">
+          <%= f.submit(:save, class:'btn btn-primary') %>
+        </div>
+      </div>
     <% end %>
   </div>
+
   <div class="tab-pane" id="tab_b" role="tabpanel">
+    <div class="row">
+      <div class="col-md-7">
+        <%= form_tag({controller: "items", action: "load", method: "post"}, {multipart: true, class:'form-inline'}) do %>
+          <div class="input-group">
+            <label class="input-group-btn">
+              <span class="btn btn-success">
+                ファイルの選択<%= file_field_tag :file_e, style: "display:none;" %>
+              </span>
+            </label>
+            <input type="text" class="form-control" readonly="" style="width:300px;" id="fname_e">
+          </div>
+          &nbsp;&nbsp;&nbsp;
+          <%= submit_tag "ファイルのインポート", class: "btn btn-success" %>
+        <% end %>
+      </div>
+      <div class="col-md-2">
+        <button id="search" class="btn btn-primary">検索開始</button>
+      </div>
+      <div class="col-md-12">
+        <br>
+      </div>
+      <div class="col-md-12">
+        <div id="keyword_table"></div>
+      </div>
+      <input id="progress" value="continue" type="hidden" />
+    </div>
+  </div>
+
+
+  <div class="tab-pane" id="tab_c" role="tabpanel">
     <div class="row">
       <div class="col-md-12">
         <p>検索結果</p>
+        <div id="result_table"></div>
+      </div>
+      <br>
+      <br>
+      <div class="col-md-12">
+        <br>
+        <a id="export" class="btn btn-primary" href="#" download="">CSV出力</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="checkbox-inline"><input type="checkbox" value="" id="chk_asin" checked>ASIN</label>
+        <label class="checkbox-inline"><input type="checkbox" value="" id="chk_key" checked>検索キー</label>
+        <label class="checkbox-inline"><input type="checkbox" value="" id="chk_iprice" checked>入力価格</label>
+        <label class="checkbox-inline"><input type="checkbox" value="" id="chk_sprice" checked>販売価格</label>
+        <label class="checkbox-inline"><input type="checkbox" value="" id="chk_title" checked>商品名</label>
+        <label class="checkbox-inline"><input type="checkbox" value="" id="chk_url" checked>商品URL</label>
+        <label class="checkbox-inline"><input type="checkbox" value="" id="chk_cond" checked>コンディション</label>
+        <label class="checkbox-inline"><input type="checkbox" value="" id="chk_id" checked>商品ID</label>
       </div>
     </div>
   </div>
 </div>
+
+<%= javascript_include_tag 'items', 'data-turbolinks-track': 'reload'  %>

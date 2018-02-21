@@ -4,8 +4,16 @@ Rails.application.routes.draw do
 
   get 'items' => 'items#show'
   get 'items/show'
+  post 'items/show'
+
+  post 'items/load'
+
+  post 'items/save'
+  patch 'items/save'
+  get 'items/save' => 'items#show'
 
   get 'items/search'
+  post 'items/search'
 
   root to: 'apps#show'
   get 'apps/show'

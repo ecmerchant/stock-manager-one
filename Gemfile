@@ -77,4 +77,4 @@ gem 'ransack'
 
 # gem for ebay
 gem 'ebay-ruby'
-
+gem 'typhoeus'

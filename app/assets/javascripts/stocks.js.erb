@@ -12,20 +12,22 @@ window.addEventListener('DOMContentLoaded', function() {
 
   //インポートするファイル名の表示
   var targetfile = document.getElementById('file');
-  targetfile.onchange = function(){
-    var flabel = document.getElementById('fname');
-    var fname = targetfile.value.replace(/\\/g, '/').replace(/.*\//, '');
-    flabel.value = fname;
+  if(targetfile != null){
+    targetfile.onchange = function(){
+      var flabel = document.getElementById('fname');
+      var fname = targetfile.value.replace(/\\/g, '/').replace(/.*\//, '');
+      flabel.value = fname;
+    }
   }
-
   //インポートするファイル名の表示
   var targetfile3 = document.getElementById('file_e');
-  targetfile3.onchange = function(){
-    var flabel3 = document.getElementById('fname_e');
-    var fname3 = targetfile3.value.replace(/\\/g, '/').replace(/.*\//, '');
-    flabel3.value = fname3;
+  if(targetfile3 != null){
+    targetfile3.onchange = function(){
+      var flabel3 = document.getElementById('fname_e');
+      var fname3 = targetfile3.value.replace(/\\/g, '/').replace(/.*\//, '');
+      flabel3.value = fname3;
+    }
   }
-
   //在庫管理表のデーブル表示
   var dd = gon.stocklist;
   var maxRownum = 9600;
@@ -148,13 +150,14 @@ window.addEventListener('DOMContentLoaded', function() {
   });
   ////////////
   //タブ切り替え時にリロード
+
   $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
     var activated_tab = e.target // activated tab
     var previous_tab = e.relatedTarget // previous tab
     stock_handsontable.render();
     setting_handsontable.render();
   })
-
+  
   //インポートするファイル名の表示
   var targetfile2 = document.getElementById('set_file');
   targetfile2.onchange = function(){
