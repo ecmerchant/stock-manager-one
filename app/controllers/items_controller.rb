@@ -111,7 +111,7 @@ class ItemsController < ApplicationController
                   + "&itemFilter(2).value(0)=" + score
       end
 
-      if cat == -1 then
+      if cat == "-1" then
         endpoint  = "http://svcs.ebay.com/services/search/FindingService/v1?"\
                   + "OPERATION-NAME=findItemsAdvanced"\
                   + "&SECURITY-APPNAME=" + appid \
