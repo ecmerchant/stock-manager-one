@@ -148,14 +148,23 @@ class ItemsController < ApplicationController
       titems = xml_doc.xpath('itemId')
       logger.debug(titems)
       logger.debug("///////////////")
-      logger.debug(rank)
 
-      title = doc.elements['//title[' + String(rank) + ']'].text
-      itemid = doc.elements['//itemId[' + String(rank) + ']'].text
-      price = doc.elements['//convertedCurrentPrice[' + String(rank) + ']'].text
-      condi = doc.elements['//conditionDisplayName[' + String(rank) + ']'].text
-      ur = doc.elements['//viewItemURL[' + String(rank) + ']'].text
 
+      if doc.elements['//title[' + String(rank) + ']'] != nil then
+        logger.debug("Item Found")
+        title = doc.elements['//title[' + String(rank) + ']'].text
+        itemid = doc.elements['//itemId[' + String(rank) + ']'].text
+        price = doc.elements['//convertedCurrentPrice[' + String(rank) + ']'].text
+        condi = doc.elements['//conditionDisplayName[' + String(rank) + ']'].text
+        ur = doc.elements['//viewItemURL[' + String(rank) + ']'].text
+      else
+        logger.debug("no item")
+        title = "該当なし"
+        itemid = ""
+        price = ""
+        condi = ""
+        ur = ""
+      end
       logger.debug(title)
 
       buf = [
