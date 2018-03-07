@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   get 'items' => 'items#show'
   get 'items/show'
   post 'items/show'
-
+  get 'items/delete'
   post 'items/load'
 
   post 'items/save'

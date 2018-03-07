@@ -102,6 +102,11 @@
           <%= submit_tag "ファイルのインポート", class: "btn btn-success" %>
         <% end %>
       </div>
+      <div class="col-md-1">
+        <%= form_tag('/items/delete', {method:"get", class:'form-inline'}) do %>
+          <%= submit_tag "削除", class: "btn btn-success" %>
+        <% end %>
+      </div>
       <div class="col-md-2">
         <button id="search" class="btn btn-primary">検索開始</button>
       </div>

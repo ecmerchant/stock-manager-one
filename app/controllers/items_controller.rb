@@ -195,6 +195,11 @@ class ItemsController < ApplicationController
     redirect_to items_show_path
   end
 
+  def delete
+    Item.delete_all
+    redirect_to items_show_path
+  end
+
   def load
     csvfile = params[:file_e]
     header_check = [:asin,:keyword,:price]
