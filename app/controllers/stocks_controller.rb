@@ -139,7 +139,7 @@ class StocksController < ApplicationController
 
             tcd = cd.find_by(number: row[9])
             if tcd != nil then
-              tcd = tpc.value
+              tcd = tcd.value
             else
               tcd = ""
             end
