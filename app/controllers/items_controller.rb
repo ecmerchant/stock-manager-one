@@ -16,7 +16,7 @@ class ItemsController < ApplicationController
       '0: All': 'All',
       '1: Auction': 'Auction',
       '2: Auction with BIN': 'AuctionWithBIN',
-      '3: Fixed Price (Buy It Now)': 'BIN'
+      '3: Fixed Price (Buy It Now)': 'FixedPrice'
     }
 
     @condition_group = {
