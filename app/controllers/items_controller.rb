@@ -146,17 +146,18 @@ class ItemsController < ApplicationController
       doc = REXML::Document.new(res)
       logger.debug("debug!")
       titems = xml_doc.xpath('itemId')
-      logger.debug(titems)
+
       logger.debug("///////////////")
-
-
-      if doc.elements['//title[' + String(rank) + ']'] != nil then
+      dpath = doc.elements['findItemsAdvancedResponse/searchResult']
+      logger.debug(dpath.elements['item/title'].text)
+      spath = dpath.elements['item[' + String(rank) + ']']
+      if spath != nil then
         logger.debug("Item Found")
-        title = doc.elements['//title[' + String(rank) + ']'].text
-        itemid = doc.elements['//itemId[' + String(rank) + ']'].text
-        price = doc.elements['//convertedCurrentPrice[' + String(rank) + ']'].text
-        condi = doc.elements['//conditionDisplayName[' + String(rank) + ']'].text
-        ur = doc.elements['//viewItemURL[' + String(rank) + ']'].text
+        title = spath.elements['title'].text
+        itemid = spath.elements['itemId'].text
+        price = spath.elements['sellingStatus/convertedCurrentPrice'].text
+        condi = spath.elements['condition/conditionDisplayName]'].text
+        ur = spath.elements['viewItemURL'].text
       else
         logger.debug("no item")
         title = "該当なし"
