@@ -105,11 +105,25 @@ class ItemsController < ApplicationController
         itemfiler = itemfiler + "&itemFilter(1).name=Condition"\
                   + "&itemFilter(1).value(0)=" + cond
       end
-
+      fnum = 2
       if score != nil then
         itemfiler = itemfiler + "&itemFilter(2).name=FeedbackScoreMin"\
                   + "&itemFilter(2).value(0)=" + score
+        fnum = fnum + 1
       end
+
+      if lp != nil then
+        itemfiler = itemfiler + "&itemFilter(" + fnum.to_s + ").name=MinPrice"\
+                  + "&itemFilter(" + fnum.to_s + ").value(0)=" + lp.to_s
+        fnum = fnum + 1
+      end
+
+      if hp != nil then
+        itemfiler = itemfiler + "&itemFilter(" + fnum.to_s + ").name=MaxPrice"\
+                  + "&itemFilter(" + fnum.to_s + ").value(0)=" + hp.to_s
+        fnum = fnum + 1
+      end
+
 
       if cat == "-1" then
         endpoint  = "http://svcs.ebay.com/services/search/FindingService/v1?"\
