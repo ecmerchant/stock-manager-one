@@ -163,7 +163,7 @@ class ItemsController < ApplicationController
 
       logger.debug("///////////////")
       dpath = doc.elements['findItemsAdvancedResponse/searchResult']
-      logger.debug(dpath.elements['item/title'].text)
+      
       spath = dpath.elements['item[' + String(rank) + ']']
       if spath != nil then
         logger.debug("Item Found")

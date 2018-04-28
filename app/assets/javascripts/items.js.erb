@@ -125,7 +125,7 @@ window.addEventListener('DOMContentLoaded', function() {
     var body = [];
     body[0] = tempData;
     body[1] = colnum;
-    if(tempData[0] == ""){
+    if(tempData[0] == "" || tempData[0] == null){
       alert("終了しました");
       return;
     }
