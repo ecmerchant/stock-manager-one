@@ -196,6 +196,9 @@ window.addEventListener('DOMContentLoaded', function() {
           content[c].splice(dc[m]-m,1);
         }
       }
+      for(var d = 0; d < content[c].length; d++){
+        content[c][d] = '"' + content[c][d] + '"';
+      }
       cc = cc + content[c].join(",") + "\r\n";
     }
     var date = new Date();
