@@ -13,6 +13,7 @@ class StocksController < ApplicationController
     redirect_to root_url, :alert => exception.message
   end
 
+  PER = 1000
 
   def search
     logger.debug("\nSearching....")
@@ -28,7 +29,8 @@ class StocksController < ApplicationController
     @account = Account.new
     @user = current_user.email
     @header_hash = Stock_fields
-    gon.stocklist = Stock.all
+    @stocks = Stock.all.page(params[:page]).per(PER)
+    gon.stocklist = @stocks
     gon.codelist = Code.all
     if request.post? then
       @q = Stock.search(search_params)
@@ -66,6 +68,8 @@ class StocksController < ApplicationController
 
     if csvfile != nil then
       csv = CSV.read(csvfile.path, encoding: "Shift_JIS:UTF-8")
+      logger.debug(csv[0])
+      logger.debug(header_check)
       if csv[0] == header_check then
         logger.debug("header ok")
         ps = Code.where(category: csv[0][1])

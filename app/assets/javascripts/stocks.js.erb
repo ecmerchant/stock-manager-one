@@ -1,6 +1,4 @@
 
-//HTML読込後に実行
-window.addEventListener('DOMContentLoaded', function() {
 
   $(document).ready(function() {
   // #(ハッシュ)指定されたタブを表示する
@@ -157,7 +155,7 @@ window.addEventListener('DOMContentLoaded', function() {
     stock_handsontable.render();
     setting_handsontable.render();
   })
-  
+
   //インポートするファイル名の表示
   var targetfile2 = document.getElementById('set_file');
   targetfile2.onchange = function(){
@@ -165,5 +163,3 @@ window.addEventListener('DOMContentLoaded', function() {
     var fname2 = targetfile2.value.replace(/\\/g, '/').replace(/.*\//, '');
     flabel2.value = fname2;
   }
-
-})
