@@ -124,9 +124,8 @@ class ItemsController < ApplicationController
         fnum = fnum + 1
       end
 
-
       if cat == "-1" then
-        endpoint  = "http://svcs.ebay.com/services/search/FindingService/v1?"\
+        endpoint  = "https://svcs.ebay.com/services/search/FindingService/v1?"\
                   + "OPERATION-NAME=findItemsAdvanced"\
                   + "&SECURITY-APPNAME=" + appid \
                   + "&RESPONSE-DATA-FORMAT=XML"\
@@ -135,7 +134,7 @@ class ItemsController < ApplicationController
                   + "&sortOrder=PricePlusShippingLowest"\
                   + "&keywords=" + URI.escape(query[1].encode("Shift_JIS")).gsub("+","%20")
       else
-        endpoint  = "http://svcs.ebay.com/services/search/FindingService/v1?"\
+        endpoint  = "https://svcs.ebay.com/services/search/FindingService/v1?"\
                   + "OPERATION-NAME=findItemsAdvanced"\
                   + "&SECURITY-APPNAME=" + appid \
                   + "&RESPONSE-DATA-FORMAT=XML"\
@@ -145,25 +144,32 @@ class ItemsController < ApplicationController
                   + "&categoryId=" + cat\
                   + "&keywords=" + URI.escape(query[1].encode("Shift_JIS")).gsub("+","%20")
       end
+
       charset = nil
 
-      logger.debug("========")
+      logger.debug("------------ Endpoint ---------------")
       logger.debug(endpoint)
 
       request = Typhoeus::Request.new(
         endpoint,
         method: :get
       )
+
       request.run
       res = request.response.body
+      
       xml_doc = Nokogiri::XML(res)
       doc = REXML::Document.new(res)
-      logger.debug("debug!")
+
+      logger.debug("---------- Debug -----------")
+      logger.debug(res)
+
+
       titems = xml_doc.xpath('itemId')
 
-      logger.debug("///////////////")
+
       dpath = doc.elements['findItemsAdvancedResponse/searchResult']
-      
+
       spath = dpath.elements['item[' + String(rank) + ']']
       if spath != nil then
         logger.debug("Item Found")

@@ -24,9 +24,3 @@ Stock.create(
   note: "これはテストデータです",
   image: 1
 )
-
-Code.create(
-  type: "ブランド",
-  number: "100103",
-  value: "CASIO"
-)
