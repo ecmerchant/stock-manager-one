@@ -157,7 +157,7 @@ class ItemsController < ApplicationController
 
       request.run
       res = request.response.body
-      
+
       xml_doc = Nokogiri::XML(res)
       doc = REXML::Document.new(res)
 
