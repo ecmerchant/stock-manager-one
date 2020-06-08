@@ -140,6 +140,7 @@
         <label class="checkbox-inline"><input type="checkbox" value="" id="chk_title" checked>商品名</label>
         <label class="checkbox-inline"><input type="checkbox" value="" id="chk_url" checked>商品URL</label>
         <label class="checkbox-inline"><input type="checkbox" value="" id="chk_cond" checked>コンディション</label>
+        <label class="checkbox-inline"><input type="checkbox" value="" id="chk_ship" checked>配送期間</label>
         <label class="checkbox-inline"><input type="checkbox" value="" id="chk_id" checked>商品ID</label>
       </div>
     </div>
@@ -225,7 +226,7 @@
 
     //検索結果表示
 
-    var resheader = ["ASIN","検索キー","入力価格","販売価格(＄)","商品名","商品URL","コンディション","アイテムID"]
+    var resheader = ["ASIN","検索キー","入力価格","販売価格(＄)","商品名","商品URL","コンディション","配送期間","アイテムID"]
     var init_data = [];
     init_data[0] = [];
     for(var ss = 0; ss < resheader.length; ss++ ){
@@ -315,11 +316,12 @@
       ck[4] = document.getElementById("chk_title").checked;
       ck[5] = document.getElementById("chk_url").checked;
       ck[6] = document.getElementById("chk_cond").checked;
-      ck[7] = document.getElementById("chk_id").checked;
+      ck[7] = document.getElementById("chk_ship").checked;
+      ck[8] = document.getElementById("chk_id").checked;
 
       var dc = [];
       var a = 0;
-      for(var p = 0; p < 8; p++){
+      for(var p = 0; p < 9; p++){
         if(ck[p] == true){
           ck[p] = "";
         }else{
@@ -328,7 +330,7 @@
         }
       }
       var bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
-      var header = ["ASIN", "検索キー", "入力価格", "販売価格", "商品名", "商品URL","コンディション", "商品ID"];
+      var header = ["ASIN", "検索キー", "入力価格", "販売価格", "商品名", "商品URL","コンディション","配送期間", "商品ID"];
       var content = result_handsontable.getData();
       var cc = [];
       if(dc[0] != null){

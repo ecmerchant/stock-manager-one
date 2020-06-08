@@ -176,8 +176,9 @@ class ItemsController < ApplicationController
         title = spath.elements['title'].text
         itemid = spath.elements['itemId'].text
         price = spath.elements['sellingStatus/convertedCurrentPrice'].text
-        condi = spath.elements['condition/conditionDisplayName]'].text
+        condi = spath.elements['condition/conditionDisplayName'].text
         ur = spath.elements['viewItemURL'].text
+        ship = spath.elements['shippingInfo/handlingTime'].text
       else
         logger.debug("no item")
         title = "該当なし"
@@ -185,6 +186,7 @@ class ItemsController < ApplicationController
         price = ""
         condi = ""
         ur = ""
+        ship = ""
       end
       logger.debug(title)
 
@@ -196,7 +198,8 @@ class ItemsController < ApplicationController
         title,
         ur,
         condi,
-        itemid
+        ship,
+        itemid        
       ]
       render json:buf
     end
