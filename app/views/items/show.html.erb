@@ -63,6 +63,12 @@
         </div>
       </div>
       <div class="form-group col-md-4">
+        <label class="col-md-4 control-label" for="search_condition_handling_time">最大出荷期間 ※1以上の数字を入力</label>
+        <div class="col-md-8">
+          <%= f.text_field(:handling_time, class:'form-control') %>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
         <label class="col-md-4 control-label" for="search_condition_rank">価格の順位</label>
         <div class="col-md-8">
           <%= f.text_field(:rank, class:'form-control') %>

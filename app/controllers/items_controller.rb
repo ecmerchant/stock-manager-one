@@ -84,6 +84,7 @@ class ItemsController < ApplicationController
       sale = cuser.sales_type
       rank = cuser.rank
       score = cuser.score
+      handling_time = cuser.handling_time
 
       itemfilter = ""
       if sale == "All" then
@@ -109,6 +110,12 @@ class ItemsController < ApplicationController
       if score != nil then
         itemfiler = itemfiler + "&itemFilter(2).name=FeedbackScoreMin"\
                   + "&itemFilter(2).value(0)=" + score
+        fnum = fnum + 1
+      end
+
+      if handling_time != nil then
+        itemfiler = itemfiler + "&itemFilter(3).name=MaxHandlingTime"\
+                  + "&itemFilter(3).value(0)=" + handling_time.to_i.to_s
         fnum = fnum + 1
       end
 
@@ -199,7 +206,7 @@ class ItemsController < ApplicationController
         ur,
         condi,
         ship,
-        itemid        
+        itemid
       ]
       render json:buf
     end
@@ -248,7 +255,7 @@ class ItemsController < ApplicationController
   end
 
   private def user_params
-    params.require(:search_condition).permit(:app_id, :low_price, :high_price, :category_id, :item_condition, :rank, :sales_type, :score, :user)
+    params.require(:search_condition).permit(:app_id, :low_price, :high_price, :handling_time, :category_id, :item_condition, :rank, :sales_type, :score, :user)
   end
 
 end
