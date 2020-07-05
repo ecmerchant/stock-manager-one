@@ -2,11 +2,14 @@ require 'resque/server'
 
 Rails.application.routes.draw do
 
+  get 'items/get'
+  post 'items/get'
   get 'items' => 'items#show'
   get 'items/show'
   post 'items/show'
   get 'items/delete'
   post 'items/load'
+  post 'items/update'
 
   post 'items/save'
   patch 'items/save'

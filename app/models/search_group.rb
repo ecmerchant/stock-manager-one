@@ -1,0 +1,2 @@
+class SearchGroup < ApplicationRecord
+end

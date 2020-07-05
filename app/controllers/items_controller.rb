@@ -7,6 +7,78 @@ class ItemsController < ApplicationController
   require 'cgi'
   require 'rexml/document'
 
+  def get
+    gon.keylist = Item.all
+    @user = current_user.email
+
+    @group_id = nil
+    @search_group = SearchGroup.where(user: @user)
+    if @search_group.length > 0 then
+      @search_group = @search_group.last
+      @group_id = @search_group.group_id
+      @status = @search_group.status
+    else
+      @search_group = nil
+      @status = "実行前"
+    end
+
+    @search_user = @user + "_detail"
+    @condition = SearchCondition.find_or_create_by(user: @search_user)
+
+    @search_keyword = params[:search_keyword]
+
+    @sales_group = {
+      '0: All': 'All',
+      '1: Auction': 'Auction',
+      '2: Auction with BIN': 'AuctionWithBIN',
+      '3: Fixed Price (Buy It Now)': 'FixedPrice'
+    }
+
+    @condition_group = {
+      '0: All': 1,
+      '1: New': 1000,
+      '2: Used': 3000
+    }
+
+    @category_group = {
+      '0: All': -1,
+      '1: Jewelry & Watches': 281,
+      '2: Antiques': 20081,
+      '3: Art': 550,
+      '4: Cameras & Photo': 625,
+      '5: Business & Industrial': 12576,
+      '6: Books': 267,
+      '7: Baby': 2984,
+      '8: Cell Phones & PDAs': 15032,
+      '9: Clothing, Shoes & Accessories': 11450,
+      '10: Coins & Paper Money': 11116,
+      '11: Collectibles': 1,
+      '12: Computers & Networking': 58058,
+      '13: Crafts': 14339,
+      '14: Dolls & Bears': 237,
+      '15: DVDs & Movies': 11232,
+      '16: Electronics': 293,
+      '17: Entertainment Memorabilia': 45100,
+      '18: Gift Certificates': 31411,
+      '19: Health & Beauty': 26395,
+      '20: Home & Garden': 11700,
+      '21: Music': 11233,
+      '22: Musical Instruments': 619,
+      '23: Pet Supplies': 1281,
+      '24: Pottery & Glass': 870,
+      '25: Sporting Goods': 382,
+      '26: Sports Mem, Cards & Fan Shop': 64482,
+      '27: Tickets': 1305,
+      '28: Toys & Hobbies': 220,
+      '29: Video Games': 1249
+    }
+
+    if request.post? then
+      ProductSearchJob.perform_later(@search_keyword, @user)
+    end
+
+  end
+
   def show
     gon.keylist = Item.all
     @user = current_user.email
@@ -224,6 +296,18 @@ class ItemsController < ApplicationController
       @condition.update(user_params)
     end
     redirect_to items_show_path
+  end
+
+  def update
+    logger.debug("===================")
+    @user = current_user.email
+    search_user = @user + "_detail"
+    if request.post? then
+      logger.debug(params[:search_condition])
+      @condition = SearchCondition.find_by(user: search_user)
+      @condition.update(user_params)
+    end
+    redirect_to items_get_path
   end
 
   def delete

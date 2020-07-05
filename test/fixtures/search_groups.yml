@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: MyString
+  group_id: MyString
+  low_price: 1
+  high_price: 1
+  category_id: MyString
+  item_condition: MyString
+  sales_type: MyString
+  rank: MyString
+  score: MyString
+  handling_time: 1
+
+two:
+  user: MyString
+  group_id: MyString
+  low_price: 1
+  high_price: 1
+  category_id: MyString
+  item_condition: MyString
+  sales_type: MyString
+  rank: MyString
+  score: MyString
+  handling_time: 1

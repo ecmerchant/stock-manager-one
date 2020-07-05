@@ -8,7 +8,8 @@ end
 ruby '2.6.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.0.6'
+# gem 'rails', '~> 5.0.6'
+gem 'rails', '~> 5.2.2'
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', :group => [:development, :test]
 # Use postgreSQL as the database for Active Record
@@ -72,6 +73,7 @@ gem 'jquery-turbolinks'
 # gem for background processing
 gem 'resque'
 gem 'daemons'
+gem 'activerecord-import'
 
 # gem for search form
 gem 'ransack'
