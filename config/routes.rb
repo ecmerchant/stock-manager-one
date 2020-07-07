@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   get 'items/get'
   post 'items/get'
+  get 'items/download'
   post 'items/download'
   get 'items' => 'items#show'
   get 'items/show'

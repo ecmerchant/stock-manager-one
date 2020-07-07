@@ -136,7 +136,7 @@
       <br>
       <br>
       <div class="col-md-12">
-        <%= form_with url: items_download_path, method: :post do |form| %>
+        <%= form_with url: items_download_path(format: :csv), method: :post do |form| %>
           <%= submit_tag 'ダウンロード', class: 'btn btn-primary', style: 'margin-right: 10pt;' %>
           <label class="checkbox-inline"><input type="checkbox" name="item_id" value="1" id="chk_id" checked />商品ID</label>
           <label class="checkbox-inline"><input type="checkbox" name="title" value="1" id="chk_title" checked />商品名</label>

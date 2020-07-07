@@ -8,14 +8,31 @@ class ItemsController < ApplicationController
   require 'rexml/document'
 
   def download
+    @user = current_user.email
     if request.post? then
-      item_id = params[:item_id]
-      title = params[:title]
-      item_url = params[:item_url]
-      price = params[:price]
-      condition = params[:condition]
+      respond_to do |format|
+        @item_id = params[:item_id]
+        @title = params[:title]
+        @item_url = params[:item_url]
+        @price = params[:price]
+        @condition = params[:condition]
+        @ship = params[:shipping]
+        @specs = params[:specs]
 
-      redirect_to '/items/get#tab_c'
+        @search_group = SearchGroup.where(user: @user)
+        @products = nil
+
+        if @search_group.length > 0 then
+          @search_group = @search_group.order('created_at DESC').first
+          @group_id = @search_group.group_id
+          logger.debug(@group_id)
+          @products = Product.where(user: @user, group_id: @group_id)
+        else
+          @search_group = nil
+        end
+        format.csv {send_data render_to_string, filename: "ebay検索結果_#{Time.zone.now.strftime("%Y%m%d%H%M%S")}.csv", type: :csv}
+      # redirect_to '/items/get#tab_c'
+      end
     end
   end
 
@@ -28,8 +45,9 @@ class ItemsController < ApplicationController
     @products = nil
 
     if @search_group.length > 0 then
-      @search_group = @search_group.last
+      @search_group = @search_group.order('created_at DESC').first
       @group_id = @search_group.group_id
+      logger.debug(@group_id)
       @status = @search_group.status
       @products = Product.where(user: @user, group_id: @group_id)
     else
