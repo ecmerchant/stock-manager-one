@@ -7,16 +7,31 @@ class ItemsController < ApplicationController
   require 'cgi'
   require 'rexml/document'
 
+  def download
+    if request.post? then
+      item_id = params[:item_id]
+      title = params[:title]
+      item_url = params[:item_url]
+      price = params[:price]
+      condition = params[:condition]
+
+      redirect_to '/items/get#tab_c'
+    end
+  end
+
   def get
-    gon.keylist = Item.all
+
     @user = current_user.email
 
     @group_id = nil
     @search_group = SearchGroup.where(user: @user)
+    @products = nil
+
     if @search_group.length > 0 then
       @search_group = @search_group.last
       @group_id = @search_group.group_id
       @status = @search_group.status
+      @products = Product.where(user: @user, group_id: @group_id)
     else
       @search_group = nil
       @status = "実行前"
@@ -75,6 +90,7 @@ class ItemsController < ApplicationController
 
     if request.post? then
       ProductSearchJob.perform_later(@search_keyword, @user)
+      redirect_to '/items/get#tab_c'
     end
 
   end
