@@ -1,6 +1,7 @@
 require 'csv'
+bom = "\uFEFF"
 
-CSV.generate(:row_sep => "\r\n") do |csv|
+CSV.generate(bom, :row_sep => "\r\n") do |csv|
 
   headers = []
   cols = []
