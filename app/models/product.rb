@@ -56,16 +56,18 @@ class Product < ApplicationRecord
         itemfiler = itemfiler + "&itemFilter(1).name=Condition"\
                   + "&itemFilter(1).value(0)=" + cond
       end
+          
       fnum = 2
+          
       if score != "" then
-        itemfiler = itemfiler + "&itemFilter(2).name=FeedbackScoreMin"\
-                  + "&itemFilter(2).value(0)=" + score
+        itemfiler = itemfiler + "&itemFilter(" + fnum.to_s + ").name=FeedbackScoreMin"\
+                  + "&itemFilter(" + fnum.to_s + ").value(0)=" + score
         fnum = fnum + 1
       end
 
       if handling_time != nil then
-        itemfiler = itemfiler + "&itemFilter(3).name=MaxHandlingTime"\
-                  + "&itemFilter(3).value(0)=" + handling_time.to_i.to_s
+        itemfiler = itemfiler + "&itemFilter(" + fnum.to_s + ").name=MaxHandlingTime"\
+                  + "&itemFilter(" + fnum.to_s + ").value(0)=" + handling_time.to_i.to_s
         fnum = fnum + 1
       end
 
