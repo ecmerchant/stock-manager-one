@@ -57,7 +57,7 @@ class Product < ApplicationRecord
                   + "&itemFilter(1).value(0)=" + cond
       end
       fnum = 2
-      if score != nil then
+      if score != "" then
         itemfiler = itemfiler + "&itemFilter(2).name=FeedbackScoreMin"\
                   + "&itemFilter(2).value(0)=" + score
         fnum = fnum + 1
@@ -136,6 +136,7 @@ class Product < ApplicationRecord
         current_page = doc.get_elements('//findItemsAdvancedResponse/paginationOutput/pageNumber')[0].text
 
         item_hash = {}
+        product_list = []
 
         items.each do |buf|
           title = buf.elements['title'].text
@@ -222,7 +223,10 @@ class Product < ApplicationRecord
         )
 
         Product.import product_list, on_duplicate_key_update: {constraint_name: :product_upsert, columns: [:title, :price, :condition, :shipping, :item_url, :item_specs]}
-
+        
+        item_hash = nil
+        product_list = nil
+        
         logger.debug(total_page)
         logger.debug(current_page)
 
