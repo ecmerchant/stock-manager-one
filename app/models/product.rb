@@ -116,6 +116,7 @@ class Product < ApplicationRecord
 
       product_list = []
       counter = 0
+      tcounter = 0
 
       (1..100).each do |page_num|
         url = endpoint + "&paginationInput.pageNumber=" + page_num.to_s
@@ -214,17 +215,18 @@ class Product < ApplicationRecord
           if item_hash.has_key?(item_id) == false then
             product_list << Product.new(product_data)
             item_hash[item_id] = title
+            tcounter += 1
           end
           #logger.debug(product_data)
 
           counter += 1
           search_group.update(
-            status: "データ取得中 " + counter.to_s + "件済み"
+            status: "データ取得中 " + tcounter.to_s + "件済み"
           )
         end
 
         search_group.update(
-          status: "データ取得中 " + counter.to_s + "件済み"
+          status: "データ取得中 " + tcounter.to_s + "件済み"
         )
 
         Product.import product_list, on_duplicate_key_update: {constraint_name: :product_upsert, columns: [:title, :price, :condition, :shipping, :item_url, :item_specs]}
@@ -237,13 +239,13 @@ class Product < ApplicationRecord
 
         if current_page.to_i >= total_page.to_i then
           search_group.update(
-            status: "データ取得完了 合計" + counter.to_s + "件"
+            status: "データ取得完了 合計" + tcounter.to_s + "件"
           )
           return
         end
       end
       search_group.update(
-        status: "データ取得完了 合計" + counter.to_s + "件"
+        status: "データ取得完了 合計" + tcounter.to_s + "件"
       )
     end
 
