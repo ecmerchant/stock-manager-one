@@ -146,8 +146,11 @@ class Product < ApplicationRecord
           price = buf.elements['sellingStatus/convertedCurrentPrice'].text
           condition = buf.elements['condition/conditionDisplayName'].text
           item_url = buf.elements['viewItemURL'].text
-          ship = buf.elements['shippingInfo/handlingTime'].text
-
+          if buf.elements['shippingInfo/handlingTime'] != nil then
+            ship = buf.elements['shippingInfo/handlingTime'].text
+          else
+            ship = "-"
+          end 
           request = Typhoeus::Request.new(
             item_url,
             method: :get
