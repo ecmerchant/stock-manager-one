@@ -56,16 +56,18 @@ class Product < ApplicationRecord
         itemfiler = itemfiler + "&itemFilter(1).name=Condition"\
                   + "&itemFilter(1).value(0)=" + cond
       end
+
       fnum = 2
+
       if score.present? then
-        itemfiler = itemfiler + "&itemFilter(2).name=FeedbackScoreMin"\
-                  + "&itemFilter(2).value(0)=" + score
+        itemfiler = itemfiler + "&itemFilter(" + fnum.to_s + ").name=FeedbackScoreMin"\
+                  + "&itemFilter(" + fnum.to_s + ").value(0)=" + score
         fnum = fnum + 1
       end
 
       if handling_time.present? then
-        itemfiler = itemfiler + "&itemFilter(3).name=MaxHandlingTime"\
-                  + "&itemFilter(3).value(0)=" + handling_time.to_i.to_s
+        itemfiler = itemfiler + "&itemFilter(" + fnum.to_s + ").name=MaxHandlingTime"\
+                  + "&itemFilter(" + fnum.to_s + ").value(0)=" + handling_time.to_i.to_s
         fnum = fnum + 1
       end
 
@@ -114,6 +116,7 @@ class Product < ApplicationRecord
 
       product_list = []
       counter = 0
+      tcounter = 0
 
       (1..100).each do |page_num|
         url = endpoint + "&paginationInput.pageNumber=" + page_num.to_s
@@ -136,6 +139,7 @@ class Product < ApplicationRecord
         current_page = doc.get_elements('//findItemsAdvancedResponse/paginationOutput/pageNumber')[0].text
 
         item_hash = {}
+        product_list = []
 
         items.each do |buf|
           title = buf.elements['title'].text
@@ -143,8 +147,11 @@ class Product < ApplicationRecord
           price = buf.elements['sellingStatus/convertedCurrentPrice'].text
           condition = buf.elements['condition/conditionDisplayName'].text
           item_url = buf.elements['viewItemURL'].text
-          ship = buf.elements['shippingInfo/handlingTime'].text
-
+          if buf.elements['shippingInfo/handlingTime'] != nil then
+            ship = buf.elements['shippingInfo/handlingTime'].text
+          else
+            ship = "-"
+          end
           request = Typhoeus::Request.new(
             item_url,
             method: :get
@@ -208,33 +215,37 @@ class Product < ApplicationRecord
           if item_hash.has_key?(item_id) == false then
             product_list << Product.new(product_data)
             item_hash[item_id] = title
+            tcounter += 1
           end
           #logger.debug(product_data)
 
           counter += 1
           search_group.update(
-            status: "データ取得中 " + counter.to_s + "件済み"
+            status: "データ取得中 " + tcounter.to_s + "件済み"
           )
         end
 
         search_group.update(
-          status: "データ取得中 " + counter.to_s + "件済み"
+          status: "データ取得中 " + tcounter.to_s + "件済み"
         )
 
         Product.import product_list, on_duplicate_key_update: {constraint_name: :product_upsert, columns: [:title, :price, :condition, :shipping, :item_url, :item_specs]}
+
+        item_hash = nil
+        product_list = nil
 
         logger.debug(total_page)
         logger.debug(current_page)
 
         if current_page.to_i >= total_page.to_i then
           search_group.update(
-            status: "データ取得完了 合計" + counter.to_s + "件"
+            status: "データ取得完了 合計" + tcounter.to_s + "件"
           )
           return
         end
       end
       search_group.update(
-        status: "データ取得完了 合計" + counter.to_s + "件"
+        status: "データ取得完了 合計" + tcounter.to_s + "件"
       )
     end
 
