@@ -117,6 +117,7 @@ class Product < ApplicationRecord
       product_list = []
       counter = 0
       tcounter = 0
+      total_hash = {}
 
       (1..100).each do |page_num|
         url = endpoint + "&paginationInput.pageNumber=" + page_num.to_s
@@ -215,7 +216,12 @@ class Product < ApplicationRecord
           if item_hash.has_key?(item_id) == false then
             product_list << Product.new(product_data)
             item_hash[item_id] = title
-            tcounter += 1
+
+            total_hash.has_key?(item_id) == false then
+              tcounter += 1
+              total_hash[item_id] = tcounter
+            end
+            
           end
           #logger.debug(product_data)
 
