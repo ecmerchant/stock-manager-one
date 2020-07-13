@@ -217,7 +217,7 @@ class Product < ApplicationRecord
             product_list << Product.new(product_data)
             item_hash[item_id] = title
 
-            total_hash.has_key?(item_id) == false then
+            if total_hash.has_key?(item_id) == false then
               tcounter += 1
               total_hash[item_id] = tcounter
             end
